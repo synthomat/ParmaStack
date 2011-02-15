@@ -13,13 +13,15 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DC27BA2B130AA6DB00F350C8 /* Unix in Resources */ = {isa = PBXBuildFile; fileRef = DC27B62B130AA6DB00F350C8 /* Unix */; };
+		DCBA7F55130B277D009156AF /* DaemonGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBA7F54130B277D009156AF /* DaemonGuard.m */; };
+		DCBA7FAD130B2EA0009156AF /* ApacheHttpd.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBA7FAC130B2EA0009156AF /* ApacheHttpd.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C165DFE840E0CC02AAC07 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		1DDD58150DA1D0A300B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* ParmaStackAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParmaStackAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ParmaStackAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParmaStackAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ParmaStack_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParmaStack_Prefix.pch; sourceTree = "<group>"; };
@@ -29,6 +31,12 @@
 		8D1107310486CEB800E47090 /* ParmaStack-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ParmaStack-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ParmaStack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParmaStack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC27B62B130AA6DB00F350C8 /* Unix */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Unix; sourceTree = "<group>"; };
+		DC27BA3A130ABCDE00F350C8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		DCBA7F53130B277D009156AF /* DaemonGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaemonGuard.h; sourceTree = "<group>"; };
+		DCBA7F54130B277D009156AF /* DaemonGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaemonGuard.m; sourceTree = "<group>"; };
+		DCBA7FAB130B2EA0009156AF /* ApacheHttpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApacheHttpd.h; sourceTree = "<group>"; };
+		DCBA7FAC130B2EA0009156AF /* ApacheHttpd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApacheHttpd.m; sourceTree = "<group>"; usesTabs = 1; };
+		DCBA7FAE130B2EC8009156AF /* DaemonProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaemonProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,8 +54,13 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DCBA7FAB130B2EA0009156AF /* ApacheHttpd.h */,
+				DCBA7FAC130B2EA0009156AF /* ApacheHttpd.m */,
 				256AC3D80F4B6AC300CF3369 /* ParmaStackAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ParmaStackAppDelegate.m */,
+				DCBA7F53130B277D009156AF /* DaemonGuard.h */,
+				DCBA7F54130B277D009156AF /* DaemonGuard.m */,
+				DCBA7FAE130B2EC8009156AF /* DaemonProtocol.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -86,6 +99,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				DC27BA3A130ABCDE00F350C8 /* README.md */,
 			);
 			name = ParmaStack;
 			sourceTree = "<group>";
@@ -145,6 +159,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = sublink.de;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ParmaStack" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -184,6 +201,8 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* ParmaStackAppDelegate.m in Sources */,
+				DCBA7F55130B277D009156AF /* DaemonGuard.m in Sources */,
+				DCBA7FAD130B2EA0009156AF /* ApacheHttpd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,7 +212,7 @@
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				089C165DFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -201,7 +220,7 @@
 		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1DDD58150DA1D0A300B32029 /* English */,
+				1DDD58150DA1D0A300B32029 /* MainMenu.xib */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

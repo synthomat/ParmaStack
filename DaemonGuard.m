@@ -22,13 +22,39 @@
  */
 
 //
-//  main.m
+//  DaemonGuard.m
 //  ParmaStack
 //
 
-#import <Cocoa/Cocoa.h>
+#import "DaemonGuard.h"
 
-int main(int argc, char *argv[])
-{
-    return NSApplicationMain(argc,  (const char **) argv);
+
+@implementation DaemonGuard
+
+- (id)init {
+	// call parent constructor
+	self = [super init];
+
+	// initialize http daemon
+	httpd = [[ApacheHttpd alloc] init];
+
+	// set options for our httpd daemon
+	[httpd setOptions: [NSDictionary dictionaryWithObjectsAndKeys:
+						// server root directory
+						[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
+						nil]];
+
+	return self;
 }
+
+- (IBAction)toggleHttpd:(id)sender {
+	if (![httpd isRunning])	{
+		// start httpd daemon
+		[httpd start];
+	} else {
+		// stop httpd daemon
+		[httpd stop];
+	}
+}
+
+@end

@@ -22,13 +22,17 @@
  */
 
 //
-//  main.m
+//  DaemonProtocol.h
 //  ParmaStack
 //
 
 #import <Cocoa/Cocoa.h>
 
-int main(int argc, char *argv[])
-{
-    return NSApplicationMain(argc,  (const char **) argv);
-}
+
+@protocol DaemonProtocol <NSObject>
+
+@required
+- (void)start;
+- (void)stop;
+- (BOOL)isRunning;
+@end

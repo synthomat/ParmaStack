@@ -22,13 +22,21 @@
  */
 
 //
-//  main.m
+//  ApacheHttpd.h
 //  ParmaStack
 //
 
 #import <Cocoa/Cocoa.h>
+#import "DaemonProtocol.h"
 
-int main(int argc, char *argv[])
-{
-    return NSApplicationMain(argc,  (const char **) argv);
+@interface ApacheHttpd : NSObject <DaemonProtocol> {
+	NSMutableDictionary *options;
+	NSTask *task;
 }
+
+- (id)init;
+- (void)setOptions:(id)dict;
+- (void)start;
+- (void)stop;
+- (BOOL)isRunning;
+@end

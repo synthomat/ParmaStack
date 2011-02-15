@@ -22,13 +22,17 @@
  */
 
 //
-//  main.m
+//  DaemonGuard.h
 //  ParmaStack
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ApacheHttpd.h"
 
-int main(int argc, char *argv[])
-{
-    return NSApplicationMain(argc,  (const char **) argv);
+@interface DaemonGuard : NSObject {
+	ApacheHttpd *httpd;
 }
+
+- (id)init;
+- (IBAction)toggleHttpd:(id)sender;
+@end
