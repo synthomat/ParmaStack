@@ -39,4 +39,5 @@
 - (void)start;
 - (void)stop;
 - (BOOL)isRunning;
+- (BOOL)oldProcessExists;
 @end

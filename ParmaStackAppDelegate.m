@@ -31,21 +31,13 @@
 @implementation ParmaStackAppDelegate
 
 @synthesize window;
-@synthesize httpdButton;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	// Insert code here to initialize your application 
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
 
 }
-
-- (IBAction) httpdButtonClicked:(id)sender
-{
-    
-}
-
 @end

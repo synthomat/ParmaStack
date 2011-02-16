@@ -30,6 +30,7 @@
 
 
 @implementation DaemonGuard
+@synthesize httpdButton;
 
 - (id)init {
 	// call parent constructor
@@ -40,11 +41,15 @@
 
 	// set options for our httpd daemon
 	[httpd setOptions: [NSDictionary dictionaryWithObjectsAndKeys:
-						// server root directory
-						[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
-						nil]];
+	                    // server root directory
+	                    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
+	                    nil]];
 
 	return self;
+}
+
+- (void)awakeFromNib {
+	[httpdButton setState:[httpd isRunning]];
 }
 
 - (IBAction)toggleHttpd:(id)sender {

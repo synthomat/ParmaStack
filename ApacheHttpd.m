@@ -37,12 +37,13 @@
 
 	// set default options for the daemon
 	options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-			   @"8080", @"Port",
-			   @"etc/apache2/httpd.conf", @"Config",
-			   nil];
-    
-	[options retain];
+	           @"8080", @"Port",
+	           @"etc/apache2/httpd.conf", @"Config",
+	           nil];
 
+	// we want to keep our options for later usage
+	[options retain];
+	
 	return self;
 }
 
@@ -60,26 +61,29 @@
 		return;
 	}
 
+	if (task != Nil) {
+		[task release];
+	}
 	// initialize a new NSTask object
 	task = [[NSTask alloc] init];
 
 	// set various options as env
 	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys:
-						   [options objectForKey:@"Port"], @"PORT",
-						   nil]];
+	                       [options objectForKey:@"Port"], @"PORT",
+                           nil]];
 
 	// arguments for the executable
 	[task setArguments: [NSArray arrayWithObjects:
-						 // we want our httpd daemon to run in foreground
-						 // otherwise it will fork and terminate the init process
-						 @"-DFOREGROUND",
+	                     // we want our httpd daemon to run in foreground
+	                     // otherwise it will fork and terminate the init process
+	                     @"-DFOREGROUND",
 
-						 // the server root directory
-						 [@"-d" stringByAppendingString: [options objectForKey:@"ServerRoot"]],
+	                     // the server root directory
+	                     [@"-d" stringByAppendingString: [options objectForKey:@"ServerRoot"]],
 
-						 // the configuration file
-						 [@"-f" stringByAppendingString: [options objectForKey:@"Config"]],
-						 nil]];
+	                     // the configuration file
+	                     [@"-f" stringByAppendingString: [options objectForKey:@"Config"]],
+	                     nil]];
 
 	[task setLaunchPath: [[options objectForKey:@"ServerRoot"] stringByAppendingString: @"/bin/httpd"]];
 
@@ -92,13 +96,33 @@
 	if (![self isRunning]) {
 		return;
 	}
-
+	
 	// terminate httpd daemon
-	[task terminate];
+	if ([self oldProcessExists]) {
+		// pid of an existing process which was launched within a previous session
+		NSString *pid = [NSString stringWithContentsOfFile:[[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/httpd.pid"]
+												  encoding:NSUTF8StringEncoding
+													 error:NULL];
+		// trim newline
+		pid = [pid stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+		// kill process by pid
+		[NSTask launchedTaskWithLaunchPath:@"/bin/kill" arguments: [NSArray arrayWithObject: pid]];
+	} else {
+		// terminate process from current session
+		[task terminate];
+	}
 }
 
 - (BOOL)isRunning {
 	// test whether our httpd daemon is running
-	return (task != Nil && [task isRunning]);
+	return (task != Nil && [task isRunning]) || [self oldProcessExists];
+}
+
+- (BOOL)oldProcessExists {
+	NSFileManager *fm = [[NSFileManager alloc] init];
+
+	// check whether a pid file exists
+	return [fm fileExistsAtPath: [[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/httpd.pid"]];
 }
 @end

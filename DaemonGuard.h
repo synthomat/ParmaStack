@@ -30,8 +30,12 @@
 #import "ApacheHttpd.h"
 
 @interface DaemonGuard : NSObject {
+	NSButton *httpdButton;
+
 	ApacheHttpd *httpd;
 }
+
+@property (assign) IBOutlet NSButton *httpdButton;
 
 - (id)init;
 - (IBAction)toggleHttpd:(id)sender;

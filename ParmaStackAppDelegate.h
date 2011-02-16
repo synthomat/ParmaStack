@@ -30,11 +30,7 @@
 
 @interface ParmaStackAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-    NSButton *httpdButton;
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSButton *httpdButton;
-
-- (IBAction) httpdButtonClicked:(id)sender;
 @end
