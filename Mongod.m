@@ -22,14 +22,14 @@
  */
 
 //
-//  ApacheHttpd.m
+//  Mongod.m
 //  ParmaStack
 //
 
-#import "ApacheHttpd.h"
+#import "Mongod.h"
 
 
-@implementation ApacheHttpd
+@implementation Mongod
 
 - (id)init {
 	// call parent constructor
@@ -37,8 +37,6 @@
 
 	// set default options for the daemon
 	options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-	           @"8080", @"Port",
-	           //@"etc/apache2/httpd.conf", @"Config",
 	           nil];
 
 	// we want to keep our options for later usage
@@ -67,28 +65,16 @@
 	// initialize a new NSTask object
 	task = [[NSTask alloc] init];
 
-	// set various options as env
-	[task setEnvironment: [NSDictionary dictionaryWithObjectsAndKeys:
-	                       [options objectForKey:@"Port"], @"PORT",
-						   [[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/web/htdocs"], @"HTDOCS",
-                           nil]];
-
 	// arguments for the executable
 	[task setArguments: [NSArray arrayWithObjects:
-	                     // we want our httpd daemon to run in foreground
-	                     // otherwise it will fork and terminate the init process
-	                     @"-DFOREGROUND",
-
 	                     // the server root directory
-	                     [@"-d" stringByAppendingString: [options objectForKey:@"ServerRoot"]],
-
-	                     // the configuration file
-	                     // [@"-f" stringByAppendingString: [options objectForKey:@"Config"]],
+	                     [@"--dbpath=" stringByAppendingString: [[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/mongo-data"]],
+	                     [@"--pidfilepath=" stringByAppendingString: [[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/mongod.pid"]],
 	                     nil]];
 
 	[task setCurrentDirectoryPath: [options objectForKey:@"ServerRoot"]];
-	[task setLaunchPath: [[options objectForKey:@"ServerRoot"] stringByAppendingString: @"/bin/httpd"]];
-	// launch the httpd daemon
+	[task setLaunchPath: [[options objectForKey:@"ServerRoot"] stringByAppendingString: @"/bin/mongod"]];
+	// launch the mongod daemon
 	[task launch];
 
 }
@@ -98,10 +84,10 @@
 		return;
 	}
 	
-	// terminate httpd daemon
+	// terminate mongod daemon
 	if ([self oldProcessExists]) {
 		// pid of an existing process which was launched within a previous session
-		NSString *pid = [NSString stringWithContentsOfFile:[[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/httpd.pid"]
+		NSString *pid = [NSString stringWithContentsOfFile:[[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/mongod.pid"]
 												  encoding:NSUTF8StringEncoding
 		                                             error:NULL];
 		// trim newline
@@ -116,7 +102,7 @@
 }
 
 - (BOOL)isRunning {
-	// test whether our httpd daemon is running
+	// test whether our mongod daemon is running
 	return (task != Nil && [task isRunning]) || [self oldProcessExists];
 }
 
@@ -124,6 +110,6 @@
 	NSFileManager *fm = [[NSFileManager alloc] init];
 
 	// check whether a pid file exists
-	return [fm fileExistsAtPath: [[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/httpd.pid"]];
+	return [fm fileExistsAtPath: [[options objectForKey:@"ServerRoot"] stringByAppendingString:@"/var/run/mongod.pid"]];
 }
 @end

@@ -13,6 +13,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DC27BA2B130AA6DB00F350C8 /* Unix in Resources */ = {isa = PBXBuildFile; fileRef = DC27B62B130AA6DB00F350C8 /* Unix */; };
+		DC4C9165130DA8B200A9EE44 /* Mongod.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4C9164130DA8B200A9EE44 /* Mongod.m */; };
 		DCBA7F55130B277D009156AF /* DaemonGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBA7F54130B277D009156AF /* DaemonGuard.m */; };
 		DCBA7FAD130B2EA0009156AF /* ApacheHttpd.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBA7FAC130B2EA0009156AF /* ApacheHttpd.m */; };
 /* End PBXBuildFile section */
@@ -32,6 +33,8 @@
 		8D1107320486CEB800E47090 /* ParmaStack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParmaStack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC27B62B130AA6DB00F350C8 /* Unix */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Unix; sourceTree = "<group>"; };
 		DC27BA3A130ABCDE00F350C8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		DC4C9163130DA8B200A9EE44 /* Mongod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mongod.h; sourceTree = "<group>"; };
+		DC4C9164130DA8B200A9EE44 /* Mongod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mongod.m; sourceTree = "<group>"; };
 		DCBA7F53130B277D009156AF /* DaemonGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaemonGuard.h; sourceTree = "<group>"; };
 		DCBA7F54130B277D009156AF /* DaemonGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaemonGuard.m; sourceTree = "<group>"; };
 		DCBA7FAB130B2EA0009156AF /* ApacheHttpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApacheHttpd.h; sourceTree = "<group>"; };
@@ -54,6 +57,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DC4C9163130DA8B200A9EE44 /* Mongod.h */,
+				DC4C9164130DA8B200A9EE44 /* Mongod.m */,
 				DCBA7FAB130B2EA0009156AF /* ApacheHttpd.h */,
 				DCBA7FAC130B2EA0009156AF /* ApacheHttpd.m */,
 				256AC3D80F4B6AC300CF3369 /* ParmaStackAppDelegate.h */,
@@ -203,6 +208,7 @@
 				256AC3DA0F4B6AC300CF3369 /* ParmaStackAppDelegate.m in Sources */,
 				DCBA7F55130B277D009156AF /* DaemonGuard.m in Sources */,
 				DCBA7FAD130B2EA0009156AF /* ApacheHttpd.m in Sources */,
+				DC4C9165130DA8B200A9EE44 /* Mongod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

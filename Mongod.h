@@ -22,26 +22,22 @@
  */
 
 //
-//  DaemonGuard.h
+//  Mongod.h
 //  ParmaStack
 //
 
 #import <Cocoa/Cocoa.h>
-#import "ApacheHttpd.h"
-#import "Mongod.h"
+#import "DaemonProtocol.h"
 
-@interface DaemonGuard : NSObject {
-	NSButton *httpdButton;
-	NSButton *mongoButton;
-
-	ApacheHttpd *httpd;
-	Mongod *mongod;
+@interface Mongod : NSObject <DaemonProtocol> {
+	NSMutableDictionary *options;
+	NSTask *task;
 }
 
-@property (assign) IBOutlet NSButton *httpdButton;
-@property (assign) IBOutlet NSButton *mongoButton;
-
 - (id)init;
-- (IBAction)toggleHttpd:(id)sender;
-- (IBAction)toggleMongo:(id)sender;
+- (void)setOptions:(id)dict;
+- (void)start;
+- (void)stop;
+- (BOOL)isRunning;
+- (BOOL)oldProcessExists;
 @end

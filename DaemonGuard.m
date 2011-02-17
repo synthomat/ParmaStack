@@ -31,6 +31,7 @@
 
 @implementation DaemonGuard
 @synthesize httpdButton;
+@synthesize mongoButton;
 
 - (id)init {
 	// call parent constructor
@@ -44,7 +45,16 @@
 	                    // server root directory
 	                    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
 	                    nil]];
+	
+	// initialize mongod daemon
+	mongod = [[Mongod alloc] init];
 
+	// set options for our httpd daemon
+	[mongod setOptions: [NSDictionary dictionaryWithObjectsAndKeys:
+	                    // server root directory
+	                    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
+	                    nil]];
+	
 	return self;
 }
 
@@ -59,6 +69,18 @@
 	} else {
 		// stop httpd daemon
 		[httpd stop];
+	}
+}
+
+- (IBAction)toggleMongo:(id)sender {
+	if (![mongod isRunning]) {
+		NSLog(@"start mongod");
+		// start mongod daemon
+		[mongod start];
+	} else {
+		NSLog(@"stop mongod");
+		// stop mongod daemon
+		[mongod stop];
 	}
 }
 
