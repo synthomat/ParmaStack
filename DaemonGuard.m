@@ -27,7 +27,7 @@
 //
 
 #import "DaemonGuard.h"
-
+#import "GeneralDaemon.h"
 
 @implementation DaemonGuard
 @synthesize httpdButton;
@@ -54,7 +54,15 @@
 	                    // server root directory
 	                    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
 	                    nil]];
-	
+
+  NSString *unixPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/Unix"];
+
+  GeneralDaemon *test = [GeneralDaemon initWithWorkingDirectory:unixPath
+                                                  andDaemonPath:@"bin/httpd"];
+  
+//  [test setPidFilePath:@"/Users/synth/test.pid"];
+//  [test isRunning];
+  
 	return self;
 }
 

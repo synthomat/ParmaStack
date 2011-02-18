@@ -16,6 +16,6 @@ MongoDB starts an own webinterface at http://localhost:28017/
 Have fun!
 
 ## License
-ParmaStack is licensed under the LGPL License (LICENSE).
+ParmaStack is licensed under the GNU Lesser General Public License (LGPL).
 
-Copyright © 2011 Anton Zering
+Copyright © 2011 sublink.de
