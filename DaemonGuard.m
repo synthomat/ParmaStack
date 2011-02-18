@@ -57,11 +57,20 @@
 
   NSString *unixPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/Unix"];
 
+
   GeneralDaemon *test = [GeneralDaemon initWithWorkingDirectory:unixPath
-                                                  andDaemonPath:@"bin/httpd"];
+                                                  andDaemon:@"httpd"];
   
-//  [test setPidFilePath:@"/Users/synth/test.pid"];
-//  [test isRunning];
+  test.arguments = [NSArray arrayWithObjects:@"-DFOREGROUND",
+                    [@"-d" stringByAppendingString:unixPath],
+                    nil];
+
+  test.env = [NSDictionary dictionaryWithObjectsAndKeys:@"8080", @"PORT",
+              // [unixPath stringByAppendingPathComponent:@"var/web/htdocs"], @"HTDOCS",
+              nil];
+
+  
+  [test start];
   
 	return self;
 }

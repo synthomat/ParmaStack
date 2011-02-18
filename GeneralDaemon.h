@@ -34,6 +34,9 @@
   NSString *pidFilePath;
   NSString *daemonPath;
   
+  NSArray *arguments;
+  NSDictionary *env;
+  
   NSTask *process;
 }
 
@@ -41,7 +44,13 @@
 @property (assign) NSString *pidFilePath;
 @property (assign) NSString *daemonPath;
 
-+ (id)initWithWorkingDirectory:(NSString *)directory andDaemonPath: (NSString *)dPath;
+@property (assign) NSArray *arguments;
+@property (assign) NSDictionary *env;
+
+
++ (id)initWithWorkingDirectory:(NSString *)directory andDaemon: (NSString *)daemon;
+- (void)start;
+- (void)stop;
 - (BOOL)isRunning;
 
 @end

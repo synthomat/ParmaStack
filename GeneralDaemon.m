@@ -34,33 +34,70 @@
 @synthesize workingDirectory;
 @synthesize pidFilePath;
 @synthesize daemonPath;
+@synthesize arguments;
+@synthesize env;
 
-+ (id)initWithWorkingDirectory:(NSString *)directory andDaemonPath: (NSString *)dPath {
++ (id)initWithWorkingDirectory:(NSString *)directory andDaemon: (NSString *)daemon{
   GeneralDaemon *gd = [[GeneralDaemon alloc] init];
   
   // working directory
   gd.workingDirectory = directory;
   
   // decide whether to use absolute or relative paths
-  if ([[dPath substringToIndex:1] isEqualTo:@"/"]) {
-    gd.daemonPath = dPath;
+  if ([[daemon substringToIndex:1] isEqualTo:@"/"]) {
+    gd.daemonPath = daemon;
   } else {
-    gd.daemonPath = [NSString pathWithComponents:[NSArray arrayWithObjects: directory, dPath, nil]];
+    gd.daemonPath = [NSString pathWithComponents:[NSArray arrayWithObjects: directory, @"bin", daemon, nil]];
   }
   
   // guess |pidFilePath|
-  gd.pidFilePath = [[gd.daemonPath lastPathComponent] stringByAppendingPathExtension:@"pid"];
-
+  gd.pidFilePath = [[NSString pathWithComponents:[NSArray arrayWithObjects:gd.workingDirectory,
+                                                                          @"var/run",
+                                                                          [gd.daemonPath lastPathComponent],
+                                                                          nil]] stringByAppendingPathExtension:@"pid"];
   return gd;
 }
 
 - (void)start {
+  // We won't start, if another process is still running.
+  if ([self isRunning]) {
+    return;
+  }
+  
+  // Does an old object exist? if yes: drop it.
+  if (process) {
+    [process release];
+  }
+  
   process = [[NSTask alloc] init];
   
+  // Provide arguments.
+  if (arguments) {
+    [process setArguments:arguments];
+  }
+  
+  // Provide environment variables
+  if (env) {
+    [process setEnvironment:env];
+  }
+
+  // Set working directory.
+  [process setCurrentDirectoryPath:workingDirectory];
+
+  // Set path to the executable.
+  [process setLaunchPath: daemonPath];
+  
+  // Launch the task.
+  [process launch];
 }
 
 - (void)stop {
+  // If nothing is running, we can't stop anything.
+  if (![self isRunning]) {
+    return;
+  }
   
+  [process terminate];
 }
 
 // gets the pid from a file
@@ -82,6 +119,10 @@
 }
 
 - (BOOL)isRunning {
-  return [self pidFromPidFile] != Nil ? YES : NO;
+  // checking
+  // 1. Process object exists
+  // 2. and Process is running
+  // 3. or PidFile exists.
+  return ((process && [self isRunning]) || [self pidFromPidFile]) ? YES : NO;
 }
 @end
