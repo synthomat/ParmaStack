@@ -27,15 +27,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "ApacheHttpd.h"
-#import "Mongod.h"
+#import "GeneralDaemon.h"
 
 @interface DaemonGuard : NSObject {
 	NSButton *httpdButton;
 	NSButton *mongoButton;
 
-	ApacheHttpd *httpd;
-	Mongod *mongod;
+	GeneralDaemon *httpd;
+	GeneralDaemon *mongod;
 }
 
 @property (assign) IBOutlet NSButton *httpdButton;

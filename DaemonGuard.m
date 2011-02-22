@@ -34,49 +34,40 @@
 @synthesize mongoButton;
 
 - (id)init {
-	// call parent constructor
-	self = [super init];
-
-	// initialize http daemon
-	httpd = [[ApacheHttpd alloc] init];
-
-	// set options for our httpd daemon
-	[httpd setOptions: [NSDictionary dictionaryWithObjectsAndKeys:
-	                    // server root directory
-	                    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
-	                    nil]];
-	
-	// initialize mongod daemon
-	mongod = [[Mongod alloc] init];
-
-	// set options for our httpd daemon
-	[mongod setOptions: [NSDictionary dictionaryWithObjectsAndKeys:
-	                    // server root directory
-	                    [[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/Contents/Resources/Unix"], @"ServerRoot",
-	                    nil]];
-
+  self = [super init];
+  
   NSString *unixPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/Unix"];
 
-
-  GeneralDaemon *test = [GeneralDaemon initWithWorkingDirectory:unixPath
+  httpd = [GeneralDaemon initWithWorkingDirectory:unixPath
                                                   andDaemon:@"httpd"];
   
-  test.arguments = [NSArray arrayWithObjects:@"-DFOREGROUND",
+  httpd.arguments = [NSArray arrayWithObjects:@"-DFOREGROUND",
                     [@"-d" stringByAppendingString:unixPath],
                     nil];
 
-  test.env = [NSDictionary dictionaryWithObjectsAndKeys:@"8080", @"PORT",
+  httpd.env = [NSDictionary dictionaryWithObjectsAndKeys:@"8080", @"PORT",
               // [unixPath stringByAppendingPathComponent:@"var/web/htdocs"], @"HTDOCS",
               nil];
 
+  [httpd retain];
   
-  [test start];
+
+  mongod = [GeneralDaemon initWithWorkingDirectory:unixPath
+                                        andDaemon:@"mongod"];
   
-	return self;
+  mongod.arguments = [NSArray arrayWithObjects:
+                      [@"--dbpath=" stringByAppendingString: [unixPath stringByAppendingPathComponent:@"var/mongo-data"]],
+                      [@"--pidfilepath=" stringByAppendingString: [mongod pidFilePath]],
+                     nil];
+  
+  [mongod retain];
+  
+  return self;
 }
 
 - (void)awakeFromNib {
 	[httpdButton setState:[httpd isRunning]];
+ 	[mongoButton setState:[mongod isRunning]];
 }
 
 - (IBAction)toggleHttpd:(id)sender {
@@ -87,15 +78,14 @@
 		// stop httpd daemon
 		[httpd stop];
 	}
+
 }
 
 - (IBAction)toggleMongo:(id)sender {
 	if (![mongod isRunning]) {
-		NSLog(@"start mongod");
 		// start mongod daemon
 		[mongod start];
 	} else {
-		NSLog(@"stop mongod");
 		// stop mongod daemon
 		[mongod stop];
 	}

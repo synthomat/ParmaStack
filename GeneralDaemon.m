@@ -37,7 +37,7 @@
 @synthesize arguments;
 @synthesize env;
 
-+ (id)initWithWorkingDirectory:(NSString *)directory andDaemon: (NSString *)daemon{
++ (GeneralDaemon *)initWithWorkingDirectory:(NSString *)directory andDaemon: (NSString *)daemon{
   GeneralDaemon *gd = [[GeneralDaemon alloc] init];
   
   // working directory
@@ -47,15 +47,17 @@
   if ([[daemon substringToIndex:1] isEqualTo:@"/"]) {
     gd.daemonPath = daemon;
   } else {
-    gd.daemonPath = [NSString pathWithComponents:[NSArray arrayWithObjects: directory, @"bin", daemon, nil]];
+    gd.daemonPath = [NSString pathWithComponents:
+                     [NSArray arrayWithObjects: directory, @"bin", daemon, nil]];
   }
   
   // guess |pidFilePath|
-  gd.pidFilePath = [[NSString pathWithComponents:[NSArray arrayWithObjects:gd.workingDirectory,
-                                                                          @"var/run",
-                                                                          [gd.daemonPath lastPathComponent],
-                                                                          nil]] stringByAppendingPathExtension:@"pid"];
-  return gd;
+  gd.pidFilePath = [[NSString pathWithComponents:
+                     [NSArray arrayWithObjects:gd.workingDirectory,
+                                               @"var/run",
+                                               [gd.daemonPath lastPathComponent],
+                                               nil]] stringByAppendingPathExtension:@"pid"];
+  return [gd autorelease];
 }
 
 - (void)start {
@@ -63,12 +65,12 @@
   if ([self isRunning]) {
     return;
   }
-  
+
+
   // Does an old object exist? if yes: drop it.
   if (process) {
     [process release];
   }
-  
   process = [[NSTask alloc] init];
   
   // Provide arguments.
@@ -86,7 +88,7 @@
 
   // Set path to the executable.
   [process setLaunchPath: daemonPath];
-  
+
   // Launch the task.
   [process launch];
 }
@@ -97,12 +99,20 @@
     return;
   }
   
-  [process terminate];
+  if (!process && [self pidFromPidFile]) {
+    [NSTask launchedTaskWithLaunchPath:@"/bin/kill"
+                             arguments:[NSArray arrayWithObject:
+                                        [[self pidFromPidFile] stringValue]]];
+
+  } else {
+    [process terminate];
+  }
 }
 
 // gets the pid from a file
 // returns Nil when file does not exist or is empty
-- (id)pidFromPidFile {
+- (NSNumber *)pidFromPidFile {
+
   NSString *pid = [NSString stringWithContentsOfFile:pidFilePath
                                             encoding:NSUTF8StringEncoding
                                                error:NULL];
@@ -110,12 +120,13 @@
   // if file does not exist, return Nil
   if(!pid)
     return Nil;
-  
+
   // trim whitespaces
-  pid = [pid stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  pid = [pid stringByTrimmingCharactersInSet:
+         [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
   // return |pid| as number or Nil
-  return [[[[NSNumberFormatter alloc] init] autorelease] numberFromString:pid];
+  return [[[NSNumberFormatter alloc] init] numberFromString:pid];
 }
 
 - (BOOL)isRunning {
@@ -123,6 +134,7 @@
   // 1. Process object exists
   // 2. and Process is running
   // 3. or PidFile exists.
-  return ((process && [self isRunning]) || [self pidFromPidFile]) ? YES : NO;
+
+  return ((process && [process isRunning])) || [self pidFromPidFile] ? YES : NO;
 }
 @end

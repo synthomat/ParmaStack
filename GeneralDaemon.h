@@ -40,17 +40,17 @@
   NSTask *process;
 }
 
-@property (assign) NSString *workingDirectory;
-@property (assign) NSString *pidFilePath;
-@property (assign) NSString *daemonPath;
-
-@property (assign) NSArray *arguments;
-@property (assign) NSDictionary *env;
+@property (retain) NSString *workingDirectory;
+@property (retain) NSString *pidFilePath;
+@property (retain) NSString *daemonPath;
+@property (retain) NSArray *arguments;
+@property (retain) NSDictionary *env;
 
 
 + (id)initWithWorkingDirectory:(NSString *)directory andDaemon: (NSString *)daemon;
 - (void)start;
 - (void)stop;
 - (BOOL)isRunning;
+- (NSNumber *)pidFromPidFile;
 
 @end
